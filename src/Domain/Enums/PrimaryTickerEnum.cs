@@ -4,11 +4,11 @@ namespace Sonyachna_Data_Forge.Domain;
 
 public enum PrimaryTicker
 {
-    eurusd,
-    gbpusd,
-    us500,
-    us100,
-    us30,
-    xauusd,
-    oilusd
+    EURUSD,
+    GBPUSD,
+    US500,
+    US100,
+    US30,
+    XAUUSD,
+    BRENTOIL
 }

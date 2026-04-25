@@ -11,7 +11,7 @@ class Program
     {
         var request = new Request
         {
-            Ticker = PrimaryTicker.eurusd,
+            Ticker = PrimaryTicker.EURUSD,
             Timeframe = Timeframe.D,
             StartDate = new DateTime(2020, 1, 1),
             EndDate = new DateTime(2020, 12, 31),
@@ -30,7 +30,6 @@ class Program
         logger.LogCritical("This is a critical message indicating a severe failure. \n");
 
         var godRunner = new GodRunner(loggerFactory.CreateLogger<GodRunner>());
-        // i can't use 
         var result = await godRunner.RunAsync(request);
 
     }
