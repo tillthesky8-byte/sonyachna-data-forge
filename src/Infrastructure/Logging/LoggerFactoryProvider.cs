@@ -21,7 +21,7 @@ public static class LoggerFactoryProvider
                 .AddSimpleConsole( options =>
                 {
                     options.TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff ";
-                    options.SingleLine = true;
+                    options.SingleLine = false;
                 });
         });
         return loggerFactory;
