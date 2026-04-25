@@ -1,4 +1,5 @@
 // Input/Utilities.cs
+using Sonyachna_Data_Forge.Domain;
 namespace Sonyachna_Data_Forge.Input;
 public static class Utilities
 {
@@ -15,8 +16,6 @@ public static class Utilities
         if (!DateTime.TryParse(rawValue, out result))
             throw new ArgumentException($"Invalid date format for option {optionName}: {rawValue}");
     }
-
-
     // expected expression format: "param1=value1,param2=value2
     public static Dictionary<string, object> ParseParametersFromExpression(string expression)
     {
@@ -65,4 +64,31 @@ public static class Utilities
 
     }
 
+    //expected expression format: "type:param1=value1,param2=value2"
+    public static IndicatorDefinition ParseIndicatorDefinition(string expression)
+    {
+        if (!expression.Contains(':'))
+            return new IndicatorDefinition
+            {
+                Type = Enum.TryParse<IndicatorType>(expression, true, out var indicatorType) ? indicatorType : throw new ArgumentException($"Invalid indicator type: {expression}"),
+                Name = expression.Replace(" ", "").Trim().ToLowerInvariant(),
+                Parameters = new Dictionary<string, object>()
+            };
+
+        var parts = expression.Split(':', 2);
+        if (parts.Length != 2)
+            throw new ArgumentException($"Invalid indicator definition format: {expression}");
+        
+        ValidateAndParseEnum<IndicatorType>(parts[0], out var type);
+        var parameters = ParseParametersFromExpression(parts[1]);
+        var name = GenerateIndicatorName(type.ToString(), parts[1]);
+
+        return new IndicatorDefinition
+        {
+            Type = type,
+            Parameters = parameters,
+            Name = name
+        };
+  
+    }
 }
