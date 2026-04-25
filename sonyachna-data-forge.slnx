@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/sonyachna-data-forge.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/sonyachna-data-forge.tests.csproj" />
+  </Folder>
+</Solution>
