@@ -10,4 +10,10 @@ public static class Utilities
         
     }
 
+    public static void ValidateAndParseDateTime(string rawValue, string optionName, out DateTime result)
+    {
+        if (!DateTime.TryParse(rawValue, out result))
+            throw new ArgumentException($"Invalid date format for option {optionName}: {rawValue}");
+    }
+
 }
