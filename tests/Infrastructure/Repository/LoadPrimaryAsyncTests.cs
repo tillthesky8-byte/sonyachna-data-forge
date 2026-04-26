@@ -21,8 +21,6 @@ public class LoadPrimaryAsyncTests
         var startDate = DateTime.Parse(startDateStr);
         var endDate = DateTime.Parse(endDateStr);
         var result = await repository.LoadPrimaryAsync(ticker, timeframe, startDate, endDate);
-        System.Console.WriteLine($"first row: {result.FirstOrDefault()?.Timestamp}, {result.FirstOrDefault()?.Open}, {result.FirstOrDefault()?.High}, {result.FirstOrDefault()?.Low}, {result.FirstOrDefault()?.Close}, {result.FirstOrDefault()?.Volume}, {result.FirstOrDefault()?.Spread}");
-        System.Console.WriteLine($"last row: {result.LastOrDefault()?.Timestamp}, {result.LastOrDefault()?.Open}, {result.LastOrDefault()?.High}, {result.LastOrDefault()?.Low}, {result.LastOrDefault()?.Close}, {result.LastOrDefault()?.Volume}, {result.LastOrDefault()?.Spread}");
         // Assert
         Assert.NotNull(result);
         Assert.All(result, row =>
