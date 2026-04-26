@@ -13,9 +13,9 @@ public class GodRunner : IGodRunner
 
     public async Task<int> RunAsync(Request request)
     {
-        _logger.LogInformation("Starting GodRunner with:\n {@Request} \n", request);
+        _logger.LogInformation("Starting GodRunner with the request \n");
         await Task.Delay(1000);
-        _logger.LogInformation("Completed GodRunner execution for:\n {@Request} \n", request);
+        _logger.LogInformation("Completed GodRunner execution \n");
         return 0; 
     }
 }

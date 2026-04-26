@@ -17,7 +17,7 @@ SONYACHNA-DATA-FORGE is part of the SONYACHNA project, which is focused on loadi
 ## USAGE
 To use SONYACHNA-DATA-FORGE, run the command-line interface with the appropriate options. For example:
 ```bash
-dotnet run -- --ticker GBPUSD --start-date 2008-08-17 --end-date 2025-12-31 --timeframe 1D --external us_interest_rate:timeframe=irregular --external gb_interest_rate --indicator sma:source=close,period=20 --output-format csv
+dotnet run -- --ticker GBPUSD --start-date 2008-08-17 --end-date 2025-12-31 --timeframe D --external us_interest_rate --external gb_interest_rate --indicator sma:source=close,period=20 --output-format csv
 ``` 
 This command will fetch daily OHLCV data for GBPUSD from August 17, 2008, to December 31, 2025, include external datasets for US and GB interest rates with LOCF alignment, compute a 20-period Simple Moving Average (SMA) based on the close price, and output the results in CSV format.
 
