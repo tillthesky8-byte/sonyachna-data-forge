@@ -91,4 +91,28 @@ public static class Utilities
         };
   
     }
+    public static ExternalDefinition ParseExternalDefinition(string expression)
+    {
+        var parts = expression.Split(':', 2);
+        if (string.IsNullOrWhiteSpace(parts[0]))
+            throw new ArgumentException($"External definition must have a type: {expression}");
+        
+        ValidateAndParseEnum<ExternalTicker>(parts[0], out var ticker);
+
+        if (parts.Length == 2)
+        {
+            var timeframePart = parts[1].Replace(" ", "").Trim();
+            ValidateAndParseEnum<Timeframe>(timeframePart, out var timeframe);
+            return new ExternalDefinition
+            {
+                Ticker = ticker,
+                Timeframe = timeframe
+            };
+        }
+        return new ExternalDefinition
+        {
+            Ticker = ticker,
+            Timeframe = Timeframe.ANY
+        };
+    }
 }
