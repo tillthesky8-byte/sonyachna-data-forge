@@ -51,6 +51,6 @@ public class WriteCsvAsyncTests
         Assert.Equal("2023-01-01T00:00:00.0000000,1.0,1.5,0.5,1.2,1000,0.1,0.8,0.5", lines[1]);
         Assert.Equal("2023-01-02T00:00:00.0000000,1.2,1.6,0.6,1.3,1500,0.1,0.9,0.6", lines[2]);
         // Cleanup
-        // File.Delete(outputPath);
+        File.Delete(outputPath);
     }
 }

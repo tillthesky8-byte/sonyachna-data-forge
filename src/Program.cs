@@ -54,9 +54,9 @@ class Program
             logger.LogCritical("This is a critical message indicating a severe failure. \n");
 
             logger.LogInformation($"\n Created Request:\n Ticker: {request.Ticker} \n Timeframe: {request.Timeframe} \n StartDate: {request.StartDate} \n EndDate: {request.EndDate} \n OutputFormat: {request.OutputFormat} \n OutputPath: {request.OutputPath} \n LogLevel: {request.LogLevel} \n ExternalDefinitions: {string.Join(", ", request.ExternalDefinitions.Select(ed => $"{ed.Ticker}:{ed.Timeframe}"))} \n IndicatorDefinitions: {string.Join(", ", request.IndicatorDefinitions.Select(static id => $"{id.Name}({string.Join(",", id.Parameters.Select(kv => $"{kv.Key}={kv.Value}"))})"))}\n");
-
-            var godRunner = new GodRunner(loggerFactory.CreateLogger<GodRunner>());
-           
+            var repository = new Infrastructure.Repository.SqliteRepository("Data Source=../market_data.db", loggerFactory.CreateLogger<Infrastructure.Repository.SqliteRepository>());
+            var outputManager = new Infrastructure.Output.OutputManager(loggerFactory.CreateLogger<Infrastructure.Output.OutputManager>());
+            var godRunner = new GodRunner(loggerFactory.CreateLogger<GodRunner>(), repository, outputManager);
 
             return await godRunner.RunAsync(request);
         });
