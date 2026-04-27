@@ -1,7 +1,6 @@
 // infrastructure/Output/OutputManager.cs
 using Sonyachna_Data_Forge.Domain;
 using Microsoft.Extensions.Logging;
-using CsvHelper;
 using System.Globalization;
 namespace Sonyachna_Data_Forge.Infrastructure.Output;
 

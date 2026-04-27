@@ -10,5 +10,5 @@ public record FusedDataRow
     public decimal Close { get; init; }
     public decimal Volume { get; init; }
     public decimal Spread { get; init; }
-    public Dictionary<string, decimal> ExternalValues { get; init; } = new (StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, decimal?> ExternalValues { get; init; } = new (StringComparer.OrdinalIgnoreCase);
 }
