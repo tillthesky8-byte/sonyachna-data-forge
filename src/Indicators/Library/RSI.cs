@@ -1,11 +1,8 @@
 //src/Indicators/Library/RSI.cs
-
-using System.Globalization;
 using Sonyachna_Data_Forge.Domain;
-using Sonyachna_Data_Forge.Indicators;
 
 namespace Sonyachna_Data_Forge.Indicators.Library;
-public class RelativeStrengthIndex : IIndicator
+public class RSI : IIndicator
 {
     public IndicatorType Type => IndicatorType.RSI;
     public List<decimal?> Calculate(List<FusedDataRow> fusedDataRows, IndicatorDefinition definition)
