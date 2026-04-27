@@ -1,11 +1,16 @@
 // src/Core/DataFuser/DataFuser.cs
 
 using Sonyachna_Data_Forge.Domain;
-
+using Microsoft.Extensions.Logging;
 namespace Sonyachna_Data_Forge.Core;
 
 public class DataFuser : IDataFuser
 {
+    private readonly ILogger<DataFuser> _logger;
+    public DataFuser(ILogger<DataFuser> logger)
+    {
+        _logger = logger;
+    }
     public List<FusedDataRow> FuseData(List<OhlcDataRow> primaryData, Dictionary<string, List<ExternalDataRow>> externalDataDict)
     {
         var fusedData = new List<FusedDataRow>();

@@ -17,11 +17,11 @@ public static class Utilities
             throw new ArgumentException($"Invalid date format for option {optionName}: {rawValue}");
     }
     // expected expression format: "param1=value1,param2=value2
-    public static Dictionary<string, object> ParseParametersFromExpression(string expression)
+    public static Dictionary<string, string> ParseParametersFromExpression(string expression)
     {
         var trimmedExpression = expression.Replace(" ", "").Trim();
 
-        var parameters = new Dictionary<string, object>();
+        var parameters = new Dictionary<string, string>();
         if (string.IsNullOrEmpty(trimmedExpression))
             return parameters;
 
@@ -72,7 +72,7 @@ public static class Utilities
             {
                 Type = Enum.TryParse<IndicatorType>(expression, true, out var indicatorType) ? indicatorType : throw new ArgumentException($"Invalid indicator type: {expression}"),
                 Name = expression.Replace(" ", "").Trim().ToLowerInvariant(),
-                Parameters = new Dictionary<string, object>()
+                Parameters = new Dictionary<string, string>()
             };
 
         var parts = expression.Split(':', 2);

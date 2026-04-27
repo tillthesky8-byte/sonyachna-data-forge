@@ -4,5 +4,5 @@ public record IndicatorDefinition
 {
     public required string Name { get; init; }
     public IndicatorType Type { get; init; }
-    public Dictionary<string, object> Parameters { get; init; } = new (StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, string> Parameters { get; init; } = new (StringComparer.OrdinalIgnoreCase);
 }

@@ -3,6 +3,7 @@ using Sonyachna_Data_Forge.Domain;
 using Microsoft.Extensions.Logging;
 using Sonyachna_Data_Forge.Infrastructure.Repository;
 using Sonyachna_Data_Forge.Infrastructure.Output;
+using Sonyachna_Data_Forge.Core;
 using SQLitePCL;
 namespace Sonyachna_Data_Forge.Service;
 public class GodRunner : IGodRunner
@@ -10,12 +11,14 @@ public class GodRunner : IGodRunner
     private readonly ILogger<GodRunner> _logger;
     private readonly IRepository _repository;
     private readonly IOutputManager _outputManager;
+    private readonly IDataProcessor _dataProcessor;
 
-    public GodRunner(ILogger<GodRunner> logger, IRepository repository, IOutputManager outputManager)
+    public GodRunner(ILogger<GodRunner> logger, IRepository repository, IOutputManager outputManager, IDataProcessor dataProcessor)
     {
         _logger = logger;
         _repository = repository;
         _outputManager = outputManager;
+        _dataProcessor = dataProcessor;
     }
 
     public async Task<int> RunAsync(Request request)
@@ -35,19 +38,10 @@ public class GodRunner : IGodRunner
             externalDataDict[$"{extDef.Ticker}"] = extData;
         }
 
-
-        //temporary
-        List<ProcessedDataRow> processedData = primaryData.Select(od => new ProcessedDataRow
-        {
-            Timestamp = od.Timestamp,
-            Open = od.Open,
-            High = od.High,
-            Low = od.Low,
-            Close = od.Close,
-            Volume = od.Volume,
-            Spread = od.Spread
-        }).ToList();
-
+        var processedData = _dataProcessor.ProcessData(primaryData, externalDataDict, request.IndicatorDefinitions);
+        _logger.LogInformation("Processed data contains {Count} rows \n", processedData.Count);
+        _logger.LogDebug("Processed data sample: \n {Sample} \n", processedData.Take(5).Select(d => $"{d.Timestamp}: Close={d.Close}, Indicators={string.Join(";", d.IndicatorValues.Select(kv => $"{kv.Key}={kv.Value}"))}").ToList());
+        
         var outputResult = _outputManager.WriteAsync(processedData, request.OutputFormat, request.OutputPath);
         if (!outputResult.Success)        {
             _logger.LogError("Failed to write output: {Message} \n", outputResult.Message);

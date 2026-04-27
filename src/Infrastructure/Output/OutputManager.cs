@@ -1,6 +1,7 @@
 // infrastructure/Output/OutputManager.cs
 using Sonyachna_Data_Forge.Domain;
 using Microsoft.Extensions.Logging;
+using CsvHelper;
 using System.Globalization;
 namespace Sonyachna_Data_Forge.Infrastructure.Output;
 
@@ -50,11 +51,23 @@ public class OutputManager : IOutputManager
                 row.High.ToString(CultureInfo.InvariantCulture),
                 row.Low.ToString(CultureInfo.InvariantCulture),
                 row.Close.ToString(CultureInfo.InvariantCulture),
-                row.Volume.ToString(),
+                row.Volume.ToString(CultureInfo.InvariantCulture),
                 row.Spread.ToString(CultureInfo.InvariantCulture)
             };
-            rowValues.AddRange(externalColumns.Select(col => row.ExternalValues.TryGetValue(col, out var val) ? val.ToString(CultureInfo.InvariantCulture) : ""));
-            rowValues.AddRange(indicatorColumns.Select(col => row.IndicatorValues.TryGetValue(col, out var val) ? val.ToString(CultureInfo.InvariantCulture) : ""));
+            rowValues.AddRange
+            (
+                externalColumns.Select
+                (
+                    col => row.ExternalValues.TryGetValue(col, out var val) ? val?.ToString(CultureInfo.InvariantCulture) ?? "" : ""
+                )
+            );
+            rowValues.AddRange
+            (
+                indicatorColumns.Select
+                (
+                    col => row.IndicatorValues.TryGetValue(col, out var val) ? val?.ToString(CultureInfo.InvariantCulture) ?? "" : ""
+                )
+            );
             writer.WriteLine(string.Join(",", rowValues));
         }
         _logger.LogInformation("Data successfully written to CSV at {Path}", path);

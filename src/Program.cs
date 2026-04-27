@@ -1,6 +1,8 @@
 ﻿using Sonyachna_Data_Forge.Infrastructure.Logging;
 using Sonyachna_Data_Forge.Domain;
 using Sonyachna_Data_Forge.Input.Options;
+using Sonyachna_Data_Forge.Core;
+using Sonyachna_Data_Forge.Indicators.IndicatorFactory;
 
 using Microsoft.Extensions.Logging;
 using Sonyachna_Data_Forge.Service;
@@ -56,7 +58,8 @@ class Program
             logger.LogInformation($"\n Created Request:\n Ticker: {request.Ticker} \n Timeframe: {request.Timeframe} \n StartDate: {request.StartDate} \n EndDate: {request.EndDate} \n OutputFormat: {request.OutputFormat} \n OutputPath: {request.OutputPath} \n LogLevel: {request.LogLevel} \n ExternalDefinitions: {string.Join(", ", request.ExternalDefinitions.Select(ed => $"{ed.Ticker}:{ed.Timeframe}"))} \n IndicatorDefinitions: {string.Join(", ", request.IndicatorDefinitions.Select(static id => $"{id.Name}({string.Join(",", id.Parameters.Select(kv => $"{kv.Key}={kv.Value}"))})"))}\n");
             var repository = new Infrastructure.Repository.SqliteRepository("Data Source=../market_data.db", loggerFactory.CreateLogger<Infrastructure.Repository.SqliteRepository>());
             var outputManager = new Infrastructure.Output.OutputManager(loggerFactory.CreateLogger<Infrastructure.Output.OutputManager>());
-            var godRunner = new GodRunner(loggerFactory.CreateLogger<GodRunner>(), repository, outputManager);
+            var dataProcessor = new DataProcessor(new IndicatorFactory(), loggerFactory);
+            var godRunner = new GodRunner(loggerFactory.CreateLogger<GodRunner>(), repository, outputManager, dataProcessor);
 
             return await godRunner.RunAsync(request);
         });
